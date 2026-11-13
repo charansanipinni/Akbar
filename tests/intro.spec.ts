@@ -2,6 +2,42 @@
 
 test.use({launchOptions:{args:['--autoplay-policy=no-user-gesture-required']}});
 
+test('every reload and fresh visit starts a new audible introduction',async({page})=>{
+ await page.goto('/');
+ for(const visit of ['arrival','reload','return']){
+  if(visit==='reload')await page.reload();
+  if(visit==='return'){await page.goto('about:blank');await page.goto('/');}
+  const video=page.locator('.portrait-video');
+  await expect(video).toBeVisible();
+  await expect(video).toHaveJSProperty('muted',false);
+  await expect.poll(()=>video.evaluate((el:HTMLVideoElement)=>el.currentTime)).toBeGreaterThan(.2);
+  await video.evaluate((el:HTMLVideoElement)=>{el.currentTime=el.duration-.2;});
+  await expect(video).toBeHidden();
+ }
+});
+
+test('blocked introduction retries on the first interaction only',async({page})=>{
+ await page.addInitScript(()=>{
+  const play=HTMLMediaElement.prototype.play;
+  HTMLMediaElement.prototype.play=function(){
+   this.dataset.playCalls=String(Number(this.dataset.playCalls||0)+1);
+   if(!navigator.userActivation.isActive)return Promise.reject(new DOMException('Autoplay blocked','NotAllowedError'));
+   return play.call(this);
+  };
+ });
+ await page.goto('/');
+ const video=page.locator('.portrait-video');
+ await expect(video).toHaveAttribute('data-play-calls','1');
+ await expect(page.getByRole('button',{name:'Meet Akbar',exact:true})).toBeVisible();
+ await page.getByRole('heading',{level:1}).click();
+ await expect(video).toBeVisible();
+ await expect(video).toHaveAttribute('data-play-calls','2');
+ await video.evaluate((el:HTMLVideoElement)=>{el.currentTime=el.duration-.2;});
+ await expect(video).toBeHidden();
+ await page.getByRole('heading',{level:1}).click();
+ await expect(video).toHaveAttribute('data-play-calls','2');
+});
+
 test('introduction plays once on arrival and Meet Akbar is available afterward',async({page})=>{
  await page.addInitScript(()=>{
   const play=HTMLMediaElement.prototype.play;
@@ -23,7 +59,7 @@ test('introduction plays once on arrival and Meet Akbar is available afterward',
  await expect(video).toBeHidden();
  await expect(replay).toBeVisible();
  await expect(replay).toHaveAccessibleDescription('I am MD AKBAR HUSSAIN. This is my portfolio website.');
- await page.getByRole('button',{name:'Switch to pale red theme'}).click();
+ await page.getByRole('button',{name:'Switch to evening theme'}).click();
  await expect(video).toHaveAttribute('data-play-calls','1');
  await replay.click();
  await expect(video).toBeVisible();

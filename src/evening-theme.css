@@ -1,0 +1,18 @@
+/* Restore the original forest-green evening palette. */
+.portfolio.evening{background:#252b26;color:#eeeede}
+.evening .nav-wrap{border-color:#ffffff20}
+.evening .hero-description,.evening .hero-note,.evening .hero-bottom,.evening .hero-bottom a,.evening .about-copy>p,.evening .about-location{color:#b9c2ae}
+.evening .muted-title{color:#a3af98}
+.evening .text-link,.evening .hero-bottom,.evening .intro-strip{border-color:#b9c2ae40}
+.evening .button-dark{background:#c3d1af;color:#22291c}
+.evening .notebook{background:#19231b}
+.evening .intro-strip{background:#2c352b}
+.evening .intro-strip i,.evening .about-star,.evening .portrait-spark{color:#a4b98e}
+.evening .portrait-depth .portrait-halo{background:radial-gradient(ellipse,#87956e40,transparent 70%);box-shadow:0 0 70px #87956e20}
+.evening .portrait-orbit{border-color:#a0ac884d}
+.evening .portrait-caption,.evening .portrait-coordinate{color:#a5b395}
+.evening .portrait-depth figcaption{background:#c3d1af;color:#22291c;border-color:#91a47d}
+.evening .journey-section{background:#30382f;color:#eceee6}
+.evening .about-tools,.evening .achievement-block,.evening .achievement-grid article{border-color:#a5ac9755}
+.evening .light-cord>span{background:#b9c2ae}
+.evening .light-cord i{background:linear-gradient(90deg,#65735b,#d6dfc4,#718366)}

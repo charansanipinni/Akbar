@@ -32,6 +32,7 @@ export function Portrait({reduced,active=true}:{reduced:boolean;active?:boolean}
  const [speaking,setSpeaking]=useState(false);
  const [playError,setPlayError]=useState(false);
  const autoplayAttempted=useRef(false);
+ const autoplayPending=useRef(false);
  const [replayAvailable,setReplayAvailable]=useState(false);
  useEffect(()=>{
   const player=media.current;
@@ -39,23 +40,46 @@ export function Portrait({reduced,active=true}:{reduced:boolean;active?:boolean}
   autoplayAttempted.current=true;
   void player.play().catch((error:DOMException)=>{
    setReplayAvailable(true);
+   autoplayPending.current=error.name==='NotAllowedError';
    if(error.name!=='NotAllowedError'&&error.name!=='AbortError')setPlayError(true);
   });
  },[]);
+ useEffect(()=>{
+  // Audible autoplay may require a gesture. Retry synchronously within that gesture.
+  function resumeIntro(event:Event){
+   if(!active||!autoplayPending.current)return;
+   if(event.target instanceof Element&&event.target.closest('.intro-trigger'))return;
+   autoplayPending.current=false;
+   void media.current?.play().catch((error:DOMException)=>{
+    autoplayPending.current=error.name==='NotAllowedError';
+    setReplayAvailable(true);
+    if(error.name!=='NotAllowedError'&&error.name!=='AbortError')setPlayError(true);
+   });
+  }
+  document.addEventListener('pointerdown',resumeIntro);
+  document.addEventListener('touchend',resumeIntro);
+  document.addEventListener('keydown',resumeIntro);
+  return ()=>{
+   document.removeEventListener('pointerdown',resumeIntro);
+   document.removeEventListener('touchend',resumeIntro);
+   document.removeEventListener('keydown',resumeIntro);
+  };
+ },[active]);
  useEffect(()=>{
   if(!active)media.current?.pause();
  },[active]);
  async function speak(){
   const player=media.current;if(!player)return;
+  autoplayPending.current=false;
   try{setPlayError(false);if(player.error)player.load();player.currentTime=0;await player.play();}catch{setPlayError(true);setSpeaking(false);}
  }
  return <figure className="portrait portrait-depth" ref={depth.ref} onPointerMove={depth.onPointerMove} onPointerLeave={depth.onPointerLeave}>
   <div className="portrait-orbit" aria-hidden="true"/><div className="portrait-halo"/>
   <div className={`portrait-person ${speaking&&profile.introMedia.videoSrc?'is-speaking':''}`}>
    <img src={profile.portrait.src} alt={profile.portrait.alt} fetchPriority="high"/>
-   {profile.introMedia.videoSrc&&<video ref={el=>{media.current=el;}} className="portrait-video" src={profile.introMedia.videoSrc} playsInline preload="none" onPlaying={()=>setSpeaking(true)} onPause={()=>{setSpeaking(false);setReplayAvailable(true);}} onEnded={()=>{setSpeaking(false);setReplayAvailable(true);}} onError={()=>{setSpeaking(false);setReplayAvailable(true);setPlayError(true);}} aria-label={profile.introMedia.transcript} style={{maskImage:`url("${profile.portrait.src}")`}}><track kind="captions" src="/akbar-intro.vtt" srcLang="en" label="English" default/></video>}
+   {profile.introMedia.videoSrc&&<video ref={el=>{media.current=el;}} className="portrait-video" src={profile.introMedia.videoSrc} playsInline preload="auto" onPlaying={()=>setSpeaking(true)} onPause={()=>{setSpeaking(false);setReplayAvailable(true);}} onEnded={()=>{setSpeaking(false);setReplayAvailable(true);}} onError={()=>{setSpeaking(false);setReplayAvailable(true);setPlayError(true);}} aria-label={profile.introMedia.transcript} style={{maskImage:`url("${profile.portrait.src}")`}}><track kind="captions" src="/akbar-intro.vtt" srcLang="en" label="English" default/></video>}
   </div>
-  {!profile.introMedia.videoSrc&&<audio ref={el=>{media.current=el;}} src="/akbar-intro.mp3" preload="none" onPlaying={()=>setSpeaking(true)} onPause={()=>{setSpeaking(false);setReplayAvailable(true);}} onEnded={()=>{setSpeaking(false);setReplayAvailable(true);}}/>}
+  {!profile.introMedia.videoSrc&&<audio ref={el=>{media.current=el;}} src="/akbar-intro.mp3" preload="auto" onPlaying={()=>setSpeaking(true)} onPause={()=>{setSpeaking(false);setReplayAvailable(true);}} onEnded={()=>{setSpeaking(false);setReplayAvailable(true);}}/>}
   <div className="portrait-glint" aria-hidden="true"/>
   <figcaption className="intro-caption" hidden={!replayAvailable||speaking}><button className="intro-trigger" onClick={speak} title="Replay introduction" aria-describedby="intro-transcript"><span aria-hidden="true">▶</span>Meet Akbar</button>{playError&&<span role="status">Playback unavailable. Please try again.</span>}</figcaption>
   <span id="intro-transcript" className={`intro-transcript ${speaking?'is-visible':''}`}>{profile.introMedia.transcript}</span>

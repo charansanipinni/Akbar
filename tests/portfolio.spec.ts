@@ -23,7 +23,9 @@ test('navigation, theme, portrait and contact destinations',async({page})=>{
  const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));await page.goto('/');
  await expect(page.locator('.portrait img')).toHaveJSProperty('complete',true);
  expect(await page.locator('.portrait img').evaluate((el:HTMLImageElement)=>el.naturalWidth)).toBeGreaterThan(0);
- await page.getByRole('button',{name:'Switch to pale red theme'}).click();await expect(page.locator('.portfolio')).toHaveClass('portfolio evening');
+ await page.getByRole('button',{name:'Switch to evening theme'}).click();await expect(page.locator('.portfolio')).toHaveClass('portfolio evening');
+ await expect(page.locator('.portfolio')).toHaveCSS('background-color','rgb(37, 43, 38)');
+ await expect(page.getByRole('contentinfo')).toHaveCSS('background-color','rgb(37, 43, 38)');
  await page.getByRole('button',{name:'Restore cream theme'}).click();
  for(const target of ['Work','About','Journey','Contact']){
   const menu=page.getByRole('button',{name:'Open navigation',exact:true});

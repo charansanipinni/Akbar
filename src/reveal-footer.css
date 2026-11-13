@@ -42,8 +42,8 @@
 .footer-art { position: relative; height: clamp(260px, 31vw, 460px); margin-top: 32px; overflow: hidden; }
 .footer-panorama { position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: max(100%, 760px); height: 100%; }
 .footer-panorama canvas { display: block; width: 100%; height: 100%; filter: saturate(.52) sepia(.12); }
-.evening .reveal-footer { --footer-paper: #f4dcd7; --footer-ink: #59373b; --footer-muted: #845e60; --footer-rule: #a9686440; }
-.evening .footer-panorama canvas { filter: saturate(.4) sepia(.25) hue-rotate(322deg); }
+.evening .reveal-footer { --footer-paper: #252b26; --footer-ink: #eeeede; --footer-muted: #b9c2ae; --footer-rule: #b9c2ae40; }
+.evening .footer-panorama canvas { filter: saturate(.45) brightness(.8); }
 
 @media (max-width: 720px) {
   .notebook { width: min(100%, 270px); height: 78px; }

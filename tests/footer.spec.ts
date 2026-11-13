@@ -13,10 +13,10 @@ test('footer reveals the panorama, follows the theme, and keeps its links usable
   await expect(footer.getByRole('link', { name: '+91 9347066720' })).toHaveAttribute('href', 'tel:+919347066720');
   await footer.screenshot({ path: `test-results/footer-${info.project.name}-cream.png` });
   const cream = await footer.evaluate(element => getComputedStyle(element).backgroundColor);
-  await page.getByRole('button', { name: 'Switch to pale red theme' }).click();
+  await page.getByRole('button', { name: 'Switch to evening theme' }).click();
   await footer.locator('.footer-art').scrollIntoViewIfNeeded();
   expect(await footer.evaluate(element => getComputedStyle(element).backgroundColor)).not.toBe(cream);
-  await footer.screenshot({ path: `test-results/footer-${info.project.name}-rose.png` });
+  await footer.screenshot({ path: `test-results/footer-${info.project.name}-evening.png` });
   await footer.getByRole('link', { name: 'BACK TO TOP' }).click();
   await expect(page.locator('.hero h1')).toBeInViewport();
 

@@ -5,9 +5,9 @@
 }
 
 .portfolio.evening {
-  --glass-ink: #59373b;
-  --glass-tint: #f5dbd180;
-  --glass-dark: #673f45;
+  --glass-ink: #e8ecdf;
+  --glass-tint: #c3d1af40;
+  --glass-dark: #344536;
 }
 
 .modern-header {
@@ -426,16 +426,16 @@
 }
 
 .evening .folder-back {
-  background: radial-gradient(ellipse at 70% 20%,#eac4aa,#cf9e9b 55%,#8e6d76);
+  background: radial-gradient(ellipse at 70% 20%,#b4c5ac,#81987b 55%,#4d6658);
 }
 
 .evening .folder-back::before {
-  background: #d9b1a6;
+  background: #9fb399;
 }
 
 .evening .folder-toggle {
-  color: #5b3b3e;
-  background: linear-gradient(155deg,#fff1e64a,#efd6cb9c 45%,#f6dfd3eb);
+  color: #263c30;
+  background: linear-gradient(155deg,#f1f5e84a,#d7e2cd9c 45%,#e3ebd9eb);
 }
 
 @media (max-width: 1050px) {

@@ -32,7 +32,7 @@ test('navigation, theme, portrait and contact destinations',async({page})=>{
 });
 test('title cycles continuously without a pause button and respects reduced motion',async({page})=>{
  await page.goto('/'); const card=page.locator('.notebook');const width=await card.evaluate(e=>e.clientWidth);
- expect(width).toBeLessThanOrEqual(400);
+ expect(width).toBeLessThanOrEqual(300);
  expect(await card.locator('.notebook-page > span').evaluate(e=>e.scrollWidth<=e.clientWidth)).toBe(true);
  await expect(card).toHaveAttribute('aria-label','Startup Founder',{timeout:6500});expect(await card.evaluate(e=>e.clientWidth)).toBe(width);
  await expect(card).toHaveAttribute('aria-label','Aspiring Developer',{timeout:6500});

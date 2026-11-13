@@ -25,7 +25,12 @@ test('navigation, theme, portrait and contact destinations',async({page})=>{
  expect(await page.locator('.portrait img').evaluate((el:HTMLImageElement)=>el.naturalWidth)).toBeGreaterThan(0);
  await page.getByRole('button',{name:'Switch to pale red theme'}).click();await expect(page.locator('.portfolio')).toHaveClass('portfolio evening');
  await page.getByRole('button',{name:'Restore cream theme'}).click();
- for(const target of ['Work','About','Journey','Contact']){await page.getByRole('navigation',{name:'Main navigation',exact:true}).getByRole('link',{name:new RegExp(`^${target}`)}).click();await expect(page).toHaveURL(new RegExp(`#${target.toLowerCase()}$`));}
+ for(const target of ['Work','About','Journey','Contact']){
+  const menu=page.getByRole('button',{name:'Open navigation',exact:true});
+  if(target!=='Contact'&&await menu.isVisible())await menu.click();
+  await page.getByRole('navigation',{name:'Main navigation',exact:true}).getByRole('link',{name:new RegExp(`^${target}`)}).click();
+  await expect(page).toHaveURL(new RegExp(`#${target.toLowerCase()}$`));
+ }
  await expect(page.getByRole('link',{name:'Let’s talk'})).toHaveAttribute('href','mailto:mdakbarhussain550@gmail.com');
  await expect(page.locator('a[href^="tel:"]')).toHaveAttribute('href','tel:+919347066720');
  await expect(page.getByRole('link',{name:'LinkedIn'})).toHaveAttribute('href','https://linkedin.com/in/mdakbarhussain');expect(errors).toEqual([]);

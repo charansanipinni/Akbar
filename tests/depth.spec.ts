@@ -16,6 +16,7 @@ test('door cut completes and expanded preview traps focus and returns it',async(
  if(info.project.name==='mobile')await door.tap();else await door.click();
  await expect(page.locator('.door-cut')).toHaveCount(1);
  await expect(page.locator('.door-cut')).toHaveCount(0,{timeout:3500});
+ await page.getByRole('button',{name:'Open UltraEditX folder'}).click();
  const expand=page.getByRole('button',{name:'Expand UltraEditX preview'});await expand.click();
  await expect(page.getByRole('dialog')).toBeVisible();await expect(page.getByRole('button',{name:'Close preview'})).toBeFocused();
  await page.keyboard.press('Shift+Tab');await expect(page.getByRole('link',{name:'Visit the live website'})).toBeFocused();

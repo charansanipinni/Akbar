@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { profile } from './content';
 import './reveal-footer.css';
+import { LiquidGlassLink } from './LiquidGlassLink';
 
 // Adapted from the supplied Framer Reveal Footer and its Ink Reveal Image.
 function InkPanorama({ reduced }: { reduced: boolean }) {
@@ -106,7 +107,7 @@ export function RevealFooter({ hidden, reduced }: { hidden: boolean; reduced: bo
           <p className="footer-signature"><span className="footer-orbit" aria-hidden="true" />{profile.name}</p>
           <h2>Got an idea?<br />Let’s <em>build it.</em></h2>
           <p className="footer-invitation">A project, a collaboration, or just a hello.</p>
-          <a className="footer-contact-link" href={`mailto:${profile.contact.email}`}>Let’s talk <span aria-hidden="true">↗</span></a>
+          <LiquidGlassLink className="footer-contact-link" href={`mailto:${profile.contact.email}`}>Let’s talk</LiquidGlassLink>
         </div>
         <nav className="footer-navigation" aria-label="Footer navigation">
           <div>

@@ -65,17 +65,44 @@ export function Portrait({reduced,active=true}:{reduced:boolean;active?:boolean}
 }
 
 export function ProjectVisual({project,reduced,onExpand}:{project:typeof profile.projects[number];reduced:boolean;onExpand:()=>void}){
- const depth=useDepth(reduced);
- return <div className={`project-visual ${project.accent}`} ref={el=>{depth.ref.current=el;}} onPointerMove={depth.onPointerMove} onPointerLeave={depth.onPointerLeave}>
-  <div className="visual-orbit" aria-hidden="true"/><span className="visual-label">THE VENTURE / IN FOCUS</span>
-  <button className="device-preview" onClick={onExpand} aria-label={`Expand ${project.name} preview`}>
-   <span className="preview-browser"><span>● ● ●</span><span>{new URL(project.url).hostname}</span><span>↗</span></span>
-   <img src={project.image} alt={`${project.name} website screenshot`} loading="lazy"/>
-   <span className="device-shine" aria-hidden="true"/>
-  </button>
-  <div className="device-pedestal" aria-hidden="true"/><span className="project-float-tag"><i/> {project.tags[0]}</span>
-  <span className="visual-caption">{project.wordmark}<small>CLICK THE PREVIEW TO EXPAND ↗</small></span>
- </div>;
+  const depth = useDepth(reduced);
+  const [folderOpen, setFolderOpen] = useState(false);
+  const toggle = useRef<HTMLButtonElement>(null);
+
+  // Adapted from the supplied Milk Glass Folder's tab, frosted front and rising cards.
+  return <div className={`project-visual milk-folder ${project.accent} ${folderOpen ? 'folder-open' : ''}`}
+    ref={element => { depth.ref.current = element; }} onPointerMove={depth.onPointerMove} onPointerLeave={depth.onPointerLeave}
+    onKeyDown={event => {
+      if (event.key === 'Escape' && folderOpen) {
+        event.stopPropagation();
+        setFolderOpen(false);
+        toggle.current?.focus();
+      }
+    }}>
+    <span className="visual-label">{new URL(project.url).hostname}</span>
+    <div className="folder-stage">
+      <div className="folder-back" aria-hidden="true" />
+      <div className="folder-papers" id={`folder-${project.id}`}>
+        <div className="folder-document" aria-hidden="true">
+          <small>{project.label}</small>
+          <strong>{project.name}</strong>
+          <p>{project.tags.join(' · ')}</p>
+        </div>
+        <button className="device-preview folder-preview" disabled={!folderOpen} tabIndex={folderOpen ? 0 : -1}
+          onClick={onExpand} aria-label={`Expand ${project.name} preview`}>
+          <img src={project.image} alt={`${project.name} website screenshot`} loading="lazy" />
+          <span aria-hidden="true">↗</span>
+        </button>
+      </div>
+      <button ref={toggle} className="folder-toggle" type="button" aria-expanded={folderOpen}
+        aria-controls={`folder-${project.id}`} aria-label={`${folderOpen ? 'Close' : 'Open'} ${project.name} folder`}
+        onClick={() => setFolderOpen(value => !value)}>
+        <strong>{project.name}</strong>
+        <span>{folderOpen ? 'Close folder' : 'View project'}<i aria-hidden="true">{folderOpen ? '−' : '+'}</i></span>
+      </button>
+    </div>
+    <span className="visual-caption">{project.wordmark}</span>
+  </div>;
 }
 
 export function PreviewDialog({project,onClose}:{project:typeof profile.projects[number];onClose:()=>void}){

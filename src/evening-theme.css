@@ -3,6 +3,7 @@
 .evening .nav-wrap{border-color:#ffffff20}
 .evening .hero-description,.evening .hero-note,.evening .hero-bottom,.evening .hero-bottom a,.evening .about-copy>p,.evening .about-location{color:#b9c2ae}
 .evening .muted-title{color:#a3af98}
+.evening .hero-bottom>span:nth-child(2){opacity:1}
 .evening .text-link,.evening .hero-bottom,.evening .intro-strip{border-color:#b9c2ae40}
 .evening .button-dark{background:#c3d1af;color:#22291c}
 .evening .notebook{background:#19231b}

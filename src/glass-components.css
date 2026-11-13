@@ -5,8 +5,8 @@
 }
 
 .portfolio.evening {
-  --glass-ink: #e8ecdf;
-  --glass-tint: #c3d1af40;
+  --glass-ink: #203127;
+  --glass-tint: #e3ead9;
   --glass-dark: #344536;
 }
 
@@ -154,6 +154,10 @@
   font-size: 11px;
 }
 
+.evening .modern-nav .nav-contact {
+  --glass-tint: #e3ead9;
+}
+
 .hero-actions .liquid-glass-link {
   min-height: 51px;
 }
@@ -180,12 +184,18 @@
 }
 
 .particle-name {
+  color: #242621;
   position: relative;
   display: inline-block;
   font: inherit;
   letter-spacing: inherit;
   vertical-align: baseline;
   white-space: nowrap;
+}
+
+/* Keep canvas sampling independent of the page's animated color transition. */
+.evening .particle-name {
+  color: #eeeede;
 }
 
 .particle-name canvas {

@@ -1,0 +1,7 @@
+﻿Portrait edit provenance
+Tool: built-in ImageGen
+Input: user-supplied portrait of MD Akbar Hussain.
+Output: public/akbar-portrait.png
+Prompt: Edit target: the attached portrait of MD Akbar Hussain in a dark gray suit with black shirt against a maroon background. Remove only the maroon background and make it fully transparent. Preserve his exact identity, facial features, hairstyle, skin tone, suit, pose and original body crop. This is a photographic cutout for a professional personal portfolio. No new person, no stylization, no text, no graphic elements. Keep realistic hair edges. Output the original portrait framing with transparent alpha.
+
+Full-hands extension: built-in ImageGen outpainted the original portrait to include both arms and clasped hands resting in his lap, preserving facial identity and clothing. Output: public/akbar-full-hands.png. Prompt: Expand canvas downwards and sideways to reveal both complete arms and hands, all fingers inside frame, naturally resting together in his lap in a seated professional pose. Preserve exact facial identity, hair, skin, expression, charcoal blazer and black shirt. Photorealistic anatomy and matching lighting. The generated extension retains a studio backdrop; the website displays the complete image without a bottom fade.

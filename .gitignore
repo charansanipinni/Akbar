@@ -1,0 +1,10 @@
+node_modules/
+dist/
+test-results/
+playwright-report/
+*.tsbuildinfo
+.media-tools/
+*.log
+.env
+.env.*
+!.env.example
